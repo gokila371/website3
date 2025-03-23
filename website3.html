@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading News</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #news-container {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 600px;
+            margin: auto;
+        }
+        .news-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trading News</h1>
+    <button onclick="fetchNews()">Touch Open Trading News</button>
+    <div id="news-container"></div>
+
+    <script>
+        async function fetchNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = '<p>Loading news...</p>';
+            try {
+                const response = await fetch('https://financialmodelingprep.com/api/v3/stock_news?limit=3&apikey=YOUR_API_KEY');
+                const data = await response.json();
+                container.innerHTML = '';
+                data.forEach(article => {
+                    const item = document.createElement('div');
+                    item.className = 'news-item';
+                    item.innerHTML = `<h3><a href="${article.url}" target="_blank">${article.title}</a></h3><p>${article.text}</p>`;
+                    container.appendChild(item);
+                });
+            } catch (error) {
+                container.innerHTML = '<p>Failed to load news. Please try again.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
